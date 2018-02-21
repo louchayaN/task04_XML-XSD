@@ -23,7 +23,7 @@
 		<xs:unique name="servletNameUnique">
 			<xs:selector xpath="servlet"/>
 			<xs:field xpath="servlet-name"/>
-	    </xs:unique>
+		</xs:unique>
 		
 		<xs:unique name="filterNameUnique">
 			<xs:selector xpath="filter"/>
