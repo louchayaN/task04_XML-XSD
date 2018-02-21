@@ -4,7 +4,7 @@
 	xmlns:web="http://www.corporation.com/web" 
 	targetNamespace="http://www.corporation.com/web">
 
-	<xs:element name="web-app">
+	<xs:element name="web-app">	
 		<xs:complexType>
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
 				<xs:element name="display-name" type="xs:string" />
@@ -17,37 +17,48 @@
 				<xs:element name="error-page" type="web:errorPage" />
 			</xs:choice>
 			<xs:attribute name="id" type="xs:ID" />
-			<xs:attribute name="version" type="xs:string" />
+			<xs:attribute name="version" type="xs:token" use="required" />
 		</xs:complexType>
+		
+		<xs:unique name="servletNameUnique">
+	      <xs:selector xpath="servlet"/>
+	      <xs:field xpath="servlet-name"/>
+	    </xs:unique>
+		
+	    <xs:unique name="filterNameUnique">
+	      <xs:selector xpath="filter"/>
+	      <xs:field xpath="filter-name"/>
+	    </xs:unique>
+	    
 	</xs:element>
+
 
 	<xs:complexType name="welcomeFileList">
 		<xs:sequence>
-			<xs:element name="welcome-file" type="xs:string"
-				maxOccurs="unbounded" />
+			<xs:element name="welcome-file" type="xs:string" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:complexType name="Filter">
 		<xs:sequence>
-			<xs:element name="filter-name" type="xs:string" />
+			<xs:element name="filter-name" type="xs:token" />
 			<xs:element name="filter-class" type="xs:string" />
-			<xs:element name="init-param" minOccurs="0" maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="param-name" type="xs:string" />
-						<xs:element name="param-value" type="xs:string" />
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
+			<xs:element name="init-param" type="web:initParam" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
-
+	
+	<xs:complexType name="initParam">
+		<xs:sequence>
+			<xs:element name="param-name" type="xs:string" />
+			<xs:element name="param-value" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
 	<xs:complexType name="filterMapping">
 		<xs:sequence>
-			<xs:element name="filter-name" type="xs:string" />
-			<xs:element name="url-pattern" type="xs:string" />
-			<xs:element name="dispatcher" type="xs:string" />
+			<xs:element name="filter-name" type="xs:token" />
+			<xs:element name="url-pattern" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+			<xs:element name="dispatcher" type="web:dispatcherType" minOccurs="0" maxOccurs="5"/>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -61,21 +72,14 @@
 		<xs:sequence>
 			<xs:element name="servlet-name" type="xs:string" />
 			<xs:element name="servlet-class" type="xs:string" />
-			<xs:element name="init-param" minOccurs="0" maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="param-name" type="xs:string" />
-						<xs:element name="param-value" type="xs:string" />
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
+			<xs:element name="init-param" type="web:initParam" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:complexType name="servletMapping">
 		<xs:sequence>
 			<xs:element name="servlet-name" type="xs:string" />
-			<xs:element name="url-pattern" type="xs:string" />
+			<xs:element name="url-pattern" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 
@@ -83,13 +87,23 @@
 		<xs:sequence>
 			<xs:choice minOccurs="0" maxOccurs="1">
 				<xs:element name="exception-type" type="xs:string" />
-				<xs:element name="error-code" type="web:errorCode" />
+				<xs:element name="error-code" type="web:errorCodeType" />
 			</xs:choice>
 			<xs:element name="location" type="web:pathType" />
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:simpleType name="errorCode">
+	<xs:simpleType name="dispatcherType">
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="FORWARD"/>
+        <xs:enumeration value="INCLUDE"/>
+        <xs:enumeration value="REQUEST"/>
+        <xs:enumeration value="ASYNC"/>
+        <xs:enumeration value="ERROR"/>
+      </xs:restriction>
+    </xs:simpleType>
+
+	<xs:simpleType name="errorCodeType">
 		<xs:restriction base="xs:nonNegativeInteger">
 			<xs:pattern value="\d{3}" />
 		</xs:restriction>
