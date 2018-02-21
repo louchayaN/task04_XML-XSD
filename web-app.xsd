@@ -21,14 +21,14 @@
 		</xs:complexType>
 		
 		<xs:unique name="servletNameUnique">
-	      <xs:selector xpath="servlet"/>
-	      <xs:field xpath="servlet-name"/>
+			<xs:selector xpath="servlet"/>
+			<xs:field xpath="servlet-name"/>
 	    </xs:unique>
 		
-	    <xs:unique name="filterNameUnique">
-	      <xs:selector xpath="filter"/>
-	      <xs:field xpath="filter-name"/>
-	    </xs:unique>   
+		<xs:unique name="filterNameUnique">
+			<xs:selector xpath="filter"/>
+			<xs:field xpath="filter-name"/>
+		</xs:unique>   
 	</xs:element>
 
 
@@ -41,14 +41,14 @@
 	<xs:complexType name="Filter">
 		<xs:sequence>
 			<xs:element name="filter-name" type="xs:token" />
-			<xs:element name="filter-class" type="xs:string" />
+			<xs:element name="filter-class" type="xs:token" />
 			<xs:element name="init-param" type="web:initParam" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="initParam">
 		<xs:sequence>
-			<xs:element name="param-name" type="xs:string" />
+			<xs:element name="param-name" type="xs:token" />
 			<xs:element name="param-value" type="xs:string" />
 		</xs:sequence>
 	</xs:complexType>
@@ -63,21 +63,21 @@
 
 	<xs:complexType name="Listener">
 		<xs:sequence>
-			<xs:element name="listener-class" type="xs:string" />
+			<xs:element name="listener-class" type="xs:token" />
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:complexType name="Servlet">
 		<xs:sequence>
-			<xs:element name="servlet-name" type="xs:string" />
-			<xs:element name="servlet-class" type="xs:string" />
+			<xs:element name="servlet-name" type="xs:token" />
+			<xs:element name="servlet-class" type="xs:token" />
 			<xs:element name="init-param" type="web:initParam" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:complexType name="servletMapping">
 		<xs:sequence>
-			<xs:element name="servlet-name" type="xs:string" />
+			<xs:element name="servlet-name" type="xs:token" />
 			<xs:element name="url-pattern" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
@@ -93,14 +93,14 @@
 	</xs:complexType>
 
 	<xs:simpleType name="dispatcherType">
-      <xs:restriction base="xs:token">
-        <xs:enumeration value="FORWARD"/>
-        <xs:enumeration value="INCLUDE"/>
-        <xs:enumeration value="REQUEST"/>
-        <xs:enumeration value="ASYNC"/>
-        <xs:enumeration value="ERROR"/>
-      </xs:restriction>
-    </xs:simpleType>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="FORWARD"/>
+			<xs:enumeration value="INCLUDE"/>
+			<xs:enumeration value="REQUEST"/>
+			<xs:enumeration value="ASYNC"/>
+			<xs:enumeration value="ERROR"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:simpleType name="errorCodeType">
 		<xs:restriction base="xs:nonNegativeInteger">
