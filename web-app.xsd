@@ -28,8 +28,7 @@
 	    <xs:unique name="filterNameUnique">
 	      <xs:selector xpath="filter"/>
 	      <xs:field xpath="filter-name"/>
-	    </xs:unique>
-	    
+	    </xs:unique>   
 	</xs:element>
 
 
